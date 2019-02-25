@@ -1,0 +1,39 @@
+*{
+    border-radius: 0!important;
+}
+body {
+    padding: 20px;
+    margin: 0;
+    font-family: arial, sans-serif;
+}
+
+.received-message, .sent-message {
+    padding: 10px;
+    margin: 1px 0 0 0;
+    text-align: left;
+}
+
+.sent-message {
+    background: #efefef;
+    text-align: right;
+}
+
+.received-message {
+    background: #efefef;
+    
+}
+
+#chat {
+    background: #EAEAEA;
+    border: #CCC;
+    padding: 20px;
+}
+.login-btn{
+    cursor: pointer;
+    font-weight: bold;
+}
+.msg-container{
+    min-height: 300px;
+    max-height: 600px;
+    overflow-y: scroll;
+}
