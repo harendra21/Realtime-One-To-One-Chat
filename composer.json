@@ -5,6 +5,7 @@
         }
     },
     "require": {
-        "cboden/ratchet": "0.3.*"
+        "cboden/ratchet": "0.3.*",
+        "catfan/medoo": "^1.7"
     }
 }

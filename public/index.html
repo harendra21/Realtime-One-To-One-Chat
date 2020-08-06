@@ -1,43 +1,195 @@
 <!DOCTYPE html>
-<html>
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>Ratchet WebSocket Chat Sample</title>
-        <link rel="stylesheet" href="./assets/node_modules/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="./assets/node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="./assets/css/bootflat.min.css">
-        <link rel="stylesheet" href="./assets/css/style.css">
-    </head>
-    <body class="container-fluid">
-        <div id="loginHolder">
-            <div class="form-group">
-                <label for="text-name">Enter Name</label>
-                <div class="input-group">
-                    <input type="text" onkeyup="loginOnEnter(event)" id="text-name" class="form-control">
-                    <span class="input-group-addon login-btn" onclick="login()"> Login </span>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body ng-app="myApp">
+    <div ng-controller="appCtrl" ng-init="init()" class="container" ng-cloak>
+        <div ng-if="!isUserLoggedIn" class="row">
+            <div class="col-md-8">
+                <input type="text" ng-model="userName" class="form-control" placeholder="Your name">
+            </div>
+            <div class="col-md-4 text-right">
+                <button ng-click="login(userName)" class="btn btn-primary btn-block">Login</button>
+            </div>
+        </div>
+
+        <div ng-if="isUserLoggedIn" class="row">
+            
+            <div class="col-md-4 offset-md-8">
+                <button ng-click="logout()" class="btn btn-primary btn-block">Logout</button>
+            </div>
+            <h2>I'm {{ loggedInUser }}</h2>
+        </div>
+        
+        
+
+        <!-- <div class="row">
+            <div class="col-md-3">
+                <h4>Online users</h4>
+                <small ng-if="newMessage != null && newMessage != toUser">New message {{ newMessage }}</small>
+                
+                <div ng-repeat="(key, value) in onlineUsers" ng-if="loggedInUser != value">
+                    <a ng-click="selectUser(value)"> {{ value }} </a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div ng-repeat="(key, value) in onlineUsers" ng-if="toUser == value">
+                    <div ng-repeat="msg in messages" >
+                        <div ng-if="msg.to == toUser" class="text-right">{{ msg.message }}</div>
+                        <span ng-if="msg.from == toUser">{{ msg.message }}</span>
+                    </div>
+                    <textarea class="form-control" ng-model="message"></textarea>
+                    <button class="btn btn-primary" ng-click="sendMsg(message)">Send to {{ toUser }}</button>
+                </div>
+            </div>
+        </div> -->
+        
+        
+
+    
+
+
+
+
+
+
+
+
+        <div class="container-fluid h-100" ng-if="onlineUsers">
+            <div class="row justify-content-center h-100">
+                <div class="col-md-4 col-xl-3 chat"><div class="card mb-sm-3 mb-md-0 contacts_card">
+                    <!-- <div class="card-header">
+                        {{ onlineUsers | json }}
+                    </div> -->
+                    <div class="card-body contacts_body">
+                        
+                        <small ng-if="newMessage != null && newMessage != toUser">New message {{ newMessage }}</small>
+                        <ui class="contacts">
+                            
+                            <li class="active" ng-repeat="(key, value) in onlineUsers" ng-if="loggedInUser != value" ng-click="selectUser(value)">
+                                <div class="d-flex bd-highlight">
+                                    <div class="user_info">
+                                        <span>{{ value }}</span>
+                                        <p>{{ value }} is online</p>
+                                    </div>
+                                </div>
+                            </li>
+                            
+                        </ui>
+                    </div>
+                    <div class="card-footer"></div>
+                </div></div>
+                <div class="col-md-8 col-xl-6 chat">
+
+
+                    
+                    
+                    <div class="card" ng-repeat="(key, value) in onlineUsers" ng-if="toUser == value">
+                        <div class="card-header msg_head">
+                            <div class="d-flex bd-highlight">
+                                
+                                <div class="user_info">
+                                    <span>Chat with {{ toUser }}</span>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        <div class="card-body msg_card_body">
+
+
+                            <div ng-repeat="msg in messages" >
+                                <div ng-if="msg.to == toUser" class="d-flex justify-content-end mb-4">
+                                    <div class="msg_cotainer_send">
+                                        {{ msg.message }}
+                                    </div>
+                                </div>
+                                <div ng-if="msg.from == toUser" class="d-flex justify-content-start mb-4">
+                                    <div class="msg_cotainer">{{ msg.message }}</div> 
+                                </div>
+                            </div>
+
+
+                            <!-- <div class="d-flex justify-content-start mb-4">
+                                
+                                <div class="msg_cotainer">
+                                    Hi, how are you samim?
+                                    <span class="msg_time">8:40 AM, Today</span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mb-4">
+                                <div class="msg_cotainer_send">
+                                    Hi Khalid i am good tnx how about you?
+                                    <span class="msg_time_send">8:55 AM, Today</span>
+                                </div>
+                                
+                            </div>
+                            <div class="d-flex justify-content-start mb-4">
+                                
+                                <div class="msg_cotainer">
+                                    I am good too, thank you for your chat template
+                                    <span class="msg_time">9:00 AM, Today</span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mb-4">
+                                <div class="msg_cotainer_send">
+                                    You are welcome
+                                    <span class="msg_time_send">9:05 AM, Today</span>
+                                </div>
+                            
+                            </div>
+                            <div class="d-flex justify-content-start mb-4">
+                                
+                                <div class="msg_cotainer">
+                                    I am looking for your next templates
+                                    <span class="msg_time">9:07 AM, Today</span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mb-4">
+                                <div class="msg_cotainer_send">
+                                    Ok, thank you have a good day
+                                    <span class="msg_time_send">9:10 AM, Today</span>
+                                </div>
+                                
+                            </div>
+                            <div class="d-flex justify-content-start mb-4">
+                                
+                                <div class="msg_cotainer">
+                                    Bye, see you
+                                    <span class="msg_time">9:12 AM, Today</span>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="card-footer">
+                            <div class="input-group">
+                                <div class="input-group-append">
+                                    <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                                </div>
+                                <textarea class="form-control type_msg" placeholder="Type your message..." ng-model="messageModel"></textarea>
+                                <div class="input-group-append" ng-click="sendMsg(messageModel)">
+                                    <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i>Send</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="chatHolder">
-            <h3>Hello I'm <span id="me"></span><span id="mekey"></span></h3>
-        </div>
-        <ul class="nav nav-pills nav-stacked col-md-2" id="onlineUsers">
-        </ul>
 
-        <div class="tab-content col-md-10" id="userChat">
-            
-        </div><!-- tab content -->
+    </div>
 
-        
-        <div>
-            
 
-        </div>
-        <script src="./assets/node_modules/jquery/dist/jquery.min.js"></script>
-        <script src="./assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="./assets/js/icheck.min.js"></script>
-        <script src="./assets/js/jquery.fs.selecter.min.js"></script>
-        <script src="./assets/js/jquery.fs.stepper.min.js"></script>
-        <script src="./assets/js/main.js"></script>
-    </body>
+
+
+    
+    <!-- <script src="./script/main.js"></script> -->
+    <script src="./node_modules/angular/angular.min.js"></script>
+    <script src="./script/app.js"></script>
+</body>
 </html>
