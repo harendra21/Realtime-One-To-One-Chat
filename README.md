@@ -9,3 +9,11 @@ WebSockets is a bi-directional, full-duplex, persistent connection from a web br
 5. Stat-server by — “php chat-server.php”
 6. Now hit public folder of the project by your browser — “localhost/path_to_your_folder/public”
 7. Enjoy!
+
+# Database table
+CREATE TABLE `socket_id` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) DEFAULT NULL,
+  `socket_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
