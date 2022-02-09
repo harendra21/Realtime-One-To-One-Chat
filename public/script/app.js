@@ -75,12 +75,7 @@ app.controller('appCtrl', function($scope) {
             },100)
             
         }
-
-       
-        
-       
     }
-
     $scope.selectUser = function(toUser){
         $scope.toUser = toUser;
     }
@@ -89,6 +84,4 @@ app.controller('appCtrl', function($scope) {
         var audio = new Audio('audio/beep.mp3');
         audio.play();
     };
-    
-
 });
