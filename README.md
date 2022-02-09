@@ -13,9 +13,11 @@ WebSockets is a bi-directional, full-duplex, persistent connection from a web br
 7. Enjoy!
 
 # Database table
+```sql
 CREATE TABLE `socket_id` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` varchar(255) DEFAULT NULL,
   `socket_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
+```
